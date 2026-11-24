@@ -8,7 +8,9 @@
 .externalNativeBuild
 .cxx
 local.properties
-/app/release/
+/app/release/mapping.txt
+/app/release/native-debug-symbols.zip
+/app/release/output-metadata.json
 /app/build
 /app/.cxx
 app/src/test
