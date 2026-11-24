@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/backgroundScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
+
+        <LinearLayout
+            android:id="@+id/backgroundLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewHintAllowFraction"
+                android:layout_width="match_parent"
+                android:layout_height="23dp"
+                android:text="*Allow fraction input for rank and values only when solving." />
+
+            <TextView
+                android:id="@+id/textViewHintFractionFormat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="*Use format &quot;xxx/xxx&quot; for fractions." />
+
+            <EditText
+                android:id="@+id/editTextRank"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Rank"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/editTextNumberOfOperands"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Number of Operands"
+                android:inputType="text" />
+
+            <TextView
+                android:id="@+id/textViewHintAutoCountValues"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="*Number of Operands can be auto detected while solving" />
+
+            <EditText
+                android:id="@+id/editTextValues"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Values"
+                android:inputType="text" />
+
+            <TextView
+                android:id="@+id/textViewHintSpaceSolve"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="*When solving, split values by exactly 1 space. After generation, click &quot;answer&quot; to view answer." />
+
+            <TextView
+                android:id="@+id/textViewHintSpaceGenerate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="*When generating, input Min, Max in order, also split by exactly 1 space." />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <Button
+                    android:id="@+id/buttonSolveAEC"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Solve" />
+
+                <Button
+                    android:id="@+id/buttonGenerateAEC"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Generate" />
+
+                <Button
+                    android:id="@+id/buttonStopAEC"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Stop" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <Button
+                    android:id="@+id/buttonShowAnswer"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Answer" />
+
+                <Button
+                    android:id="@+id/buttonClear"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Clear" />
+            </LinearLayout>
+
+            <Switch
+                android:id="@+id/switchPureRandomGenerate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="*Pure random generate  (All switches For future update)" />
+
+            <Switch
+                android:id="@+id/switchEnableExp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="*Use exponents" />
+
+            <Switch
+                android:id="@+id/switchAllowNotUsingAllValues"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="*Allow not using all values" />
+
+            <Switch
+                android:id="@+id/switchAllowValuesUseMoreTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="*Allow using values more than one time" />
+
+            <ProgressBar
+                android:id="@+id/progressBarAEC"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/button9"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Button" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3"></LinearLayout>
+
+            <TextView
+                android:id="@+id/textViewOutput"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Made by dandelion_dream" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
+
