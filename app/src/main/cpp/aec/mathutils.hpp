@@ -25,10 +25,7 @@ typedef enum {
     f_NAN
 } fp_class;
 
-using std::string;
-using std::regex;
-
-const regex int_regex(R"(^[-+]?\d+$)"); //regex for searching signed integers in strings.;
+const std::regex int_regex(R"(^[-+]?\d+$)"); //regex for searching signed integers in strings.;
 
 bool double_is_negative(double d);
 
@@ -50,7 +47,7 @@ uint32_t float_mantissa(float f);
 
 fp_class float_classify(float f);
 
-std::vector<uint64_t> enumerateMask(uint64_t msk, size_t n);
+uint64_t comb_number64(uint64_t n, uint64_t k);
 
 __int128_t gcd(__int128_t a, __int128_t b);
 

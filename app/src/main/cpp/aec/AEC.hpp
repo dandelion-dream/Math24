@@ -12,25 +12,31 @@
 #define MUL 2
 #define DIV 3
 
-using std::string;
-using std::vector;
-
-const string ops[] = {"+", "-", "×", "÷"};
+const std::string ops[] = {"+", "-", "×", "÷"};
 
 class node {
 public:
     node();
 
-    node(uint64_t init_mask, const string &number, int8_t base = 10);
+    node(const std::string &number, int8_t base = 10);
 
     fraction value;
     int64_t left;  //index instead of pointer.
     int64_t right;
-    uint64_t mask;
-    int complexity = 1;
     uint8_t op{};
 
-    string toString(vector<node> *input) const;
+    [[nodiscard]] std::string toString(const std::vector<node> &input) const;
+};
+
+class node_bucket{
+public:
+    node_bucket();
+    node_bucket(std::vector<int64_t> elements, uint64_t mask, uint8_t complexity, size_t zero_count);
+
+    std::vector<int64_t> elements;
+    size_t zero_count;
+    uint64_t mask;
+    uint8_t complexity;
 };
 
 class node_g {
@@ -49,40 +55,46 @@ public:
                      std::uniform_int_distribution<int64_t> intDist,
                      std::uniform_int_distribution<uint8_t> opDist);
 
-    [[nodiscard]] string getQuestion() const;
+    [[nodiscard]] std::string getQuestion() const;
 
-    [[nodiscard]] string getAnswer() const;
+    [[nodiscard]] std::string getAnswer() const;
 };
 
 class aecAnswer {
 public:
-    aecAnswer(string question, string answer);
+    aecAnswer(std::string question, std::string answer);
 
-    string question;
-    string answer;
+    std::string question;
+    std::string answer;
 };
 
 class TooManyNumbersException : public std::exception {
 public:
-    string errorMessage = "Too Many Input Number (>63)";
+    std::string errorMessage = "Too Many Input Number (>63)";
 
     [[nodiscard]] const char *what() const noexcept override {
         return errorMessage.c_str();
     }
 };
 
-string AEC_solve(vector<string> *number_array, const string &target);
+std::string AEC_solve(const std::vector<std::string> &number_array, const std::string &target);
 
-aecAnswer AEC_generate(const string &boundary, const string &sz, const string &target);
+aecAnswer AEC_generate(const std::string &boundary, const std::string &sz, const std::string &target);
 
-void iterate(vector<node> *input_array, int target_complexity);
+void bucketsCombineNormal(std::vector<node> &node_pool, const node_bucket &a, const node_bucket &b, node_bucket &out, uint64_t mask);
 
-void node_add(node *a, node *b, node *out, int64_t left, int64_t right);
+std::vector<node> bucketsCombineCheck(std::vector<node> &node_pool, const node_bucket &a, const node_bucket &b, const fraction &target);
 
-void node_sub(node *a, node *b, node *out, int64_t left, int64_t right);
+std::vector<uint64_t> getPossibleMasks(uint64_t msk, size_t n, size_t target_complexity);
 
-void node_mul(node *a, node *b, node *out, int64_t left, int64_t right);
+void fillMask(uint64_t input, size_t depth, const std::vector<uint64_t> &candidates, std::vector<uint64_t> &container);
 
-void node_div(node *a, node *b, node *out, int64_t left, int64_t right);
+size_t node_add(std::vector<node> &node_pool, int64_t a, int64_t b, int64_t out);
+
+size_t node_sub(std::vector<node> &node_pool, int64_t a, int64_t b, int64_t out);
+
+size_t node_mul(std::vector<node> &node_pool, int64_t a, int64_t b, int64_t out);
+
+size_t node_div(std::vector<node> &node_pool, int64_t a, int64_t b, int64_t out);
 
 #endif

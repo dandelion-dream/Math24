@@ -8,6 +8,7 @@ using std::string;
 using std::stoll;
 using std::to_string;
 using std::regex_match;
+using std::swap;
 
 fraction::fraction() {
     this->numerator = 0;
@@ -53,7 +54,7 @@ fraction::fraction(double value) {
                     throw ValueOutOfBoundException();
                 }
                 this->numerator = tmp_numerator;
-                this->denominator = 1ULL << exp;
+                this->denominator = 1LL << exp;
                 this->reduce();
             } else {
                 throw ValueOutOfBoundException();
@@ -99,7 +100,7 @@ fraction::fraction(float value) {
                     throw ValueOutOfBoundException();
                 }
                 this->numerator = tmp_numerator;
-                this->denominator = 1ULL << exp;
+                this->denominator = 1LL << exp;
                 this->reduce();
             } else {
                 throw ValueOutOfBoundException();
@@ -173,11 +174,11 @@ fraction::fraction(const string &value, int8_t base) {
     this->reduce();
 }
 
-void add(fraction *a, fraction *b, fraction *out) {
-    __int128_t a_numerator = a->numerator;
-    __int128_t b_numerator = b->numerator;
-    __int128_t a_denominator = a->denominator;
-    __int128_t b_denominator = b->denominator;
+void add(const fraction &a, const fraction &b, fraction &out) {
+    __int128_t a_numerator = a.numerator;
+    __int128_t b_numerator = b.numerator;
+    __int128_t a_denominator = a.denominator;
+    __int128_t b_denominator = b.denominator;
     if (a_denominator == 0 || b_denominator == 0) {
         throw ZeroDenominatorException();
     }
@@ -194,16 +195,16 @@ void add(fraction *a, fraction *b, fraction *out) {
             tmp_numerator = -tmp_numerator;
             tmp_denominator = -tmp_denominator;
         }
-        out->numerator = static_cast<int64_t>(tmp_numerator);
-        out->denominator = static_cast<int64_t>(tmp_denominator);
+        out.numerator = static_cast<int64_t>(tmp_numerator);
+        out.denominator = static_cast<int64_t>(tmp_denominator);
     }
 }
 
-void sub(fraction *a, fraction *b, fraction *out) {
-    __int128_t a_numerator = a->numerator;
-    __int128_t b_numerator = b->numerator;
-    __int128_t a_denominator = a->denominator;
-    __int128_t b_denominator = b->denominator;
+void sub(const fraction &a, const fraction &b, fraction &out) {
+    __int128_t a_numerator = a.numerator;
+    __int128_t b_numerator = b.numerator;
+    __int128_t a_denominator = a.denominator;
+    __int128_t b_denominator = b.denominator;
     if (a_denominator == 0 || b_denominator == 0) {
         throw ZeroDenominatorException();
     }
@@ -221,16 +222,16 @@ void sub(fraction *a, fraction *b, fraction *out) {
             tmp_numerator = -tmp_numerator;
             tmp_denominator = -tmp_denominator;
         }
-        out->numerator = static_cast<int64_t>(tmp_numerator);
-        out->denominator = static_cast<int64_t>(tmp_denominator);
+        out.numerator = static_cast<int64_t>(tmp_numerator);
+        out.denominator = static_cast<int64_t>(tmp_denominator);
     }
 }
 
-void mul(fraction *a, fraction *b, fraction *out) {
-    __int128_t a_numerator = a->numerator;
-    __int128_t b_numerator = b->numerator;
-    __int128_t a_denominator = a->denominator;
-    __int128_t b_denominator = b->denominator;
+void mul(const fraction &a, const fraction &b, fraction &out) {
+    __int128_t a_numerator = a.numerator;
+    __int128_t b_numerator = b.numerator;
+    __int128_t a_denominator = a.denominator;
+    __int128_t b_denominator = b.denominator;
     if (a_denominator == 0 || b_denominator == 0) {
         throw ZeroDenominatorException();
     }
@@ -247,16 +248,16 @@ void mul(fraction *a, fraction *b, fraction *out) {
             tmp_numerator = -tmp_numerator;
             tmp_denominator = -tmp_denominator;
         }
-        out->numerator = static_cast<int64_t>(tmp_numerator);
-        out->denominator = static_cast<int64_t>(tmp_denominator);
+        out.numerator = static_cast<int64_t>(tmp_numerator);
+        out.denominator = static_cast<int64_t>(tmp_denominator);
     }
 }
 
-void div(fraction *a, fraction *b, fraction *out) {
-    __int128_t a_numerator = a->numerator;
-    __int128_t b_numerator = b->numerator;
-    __int128_t a_denominator = a->denominator;
-    __int128_t b_denominator = b->denominator;
+void div(const fraction &a, const fraction &b, fraction &out) {
+    __int128_t a_numerator = a.numerator;
+    __int128_t b_numerator = b.numerator;
+    __int128_t a_denominator = a.denominator;
+    __int128_t b_denominator = b.denominator;
     if (a_denominator == 0 || b_denominator == 0) {
         throw ZeroDenominatorException();
     }
@@ -276,16 +277,16 @@ void div(fraction *a, fraction *b, fraction *out) {
             tmp_numerator = -tmp_numerator;
             tmp_denominator = -tmp_denominator;
         }
-        out->numerator = static_cast<int64_t>(tmp_numerator);
-        out->denominator = static_cast<int64_t>(tmp_denominator);
+        out.numerator = static_cast<int64_t>(tmp_numerator);
+        out.denominator = static_cast<int64_t>(tmp_denominator);
     }
 }
 
-int8_t compare(fraction *a, fraction *b) {
-    __int128_t a_numerator = a->numerator;
-    __int128_t b_numerator = b->numerator;
-    __int128_t a_denominator = a->denominator;
-    __int128_t b_denominator = b->denominator;
+int8_t compare(const fraction &a, const fraction &b) {
+    __int128_t a_numerator = a.numerator;
+    __int128_t b_numerator = b.numerator;
+    __int128_t a_denominator = a.denominator;
+    __int128_t b_denominator = b.denominator;
     if (a_denominator < 0) {
         a_numerator = -a_numerator;
         a_denominator = -a_denominator;
@@ -309,7 +310,7 @@ void fraction::flip() {
     if (this->numerator == 0) {
         throw ZeroDenominatorException();
     }
-    std::swap(this->numerator, this->denominator);
+    swap(this->numerator, this->denominator);
     if (this->denominator < 0) {
         this->numerator = -this->numerator;
         this->denominator = -this->denominator;

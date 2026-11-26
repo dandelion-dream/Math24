@@ -6,7 +6,7 @@ import android.os.Message;
 
 import androidx.annotation.NonNull;
 
-import dandeliondream.math24.services.AECQuetion;
+import dandeliondream.math24.services.AECQuestion;
 import dandeliondream.math24.services.AECTask;
 import dandeliondream.math24.services.BackgroundService;
 
@@ -27,7 +27,7 @@ public class AECMainThread extends HandlerThread {
 
     private native String solveAEC(String[] numbers, String target);
 
-    private native AECQuetion generateAEC(String boundary, String sz, String target);
+    private native AECQuestion generateAEC(String boundary, String sz, String target);
 
     public Handler getHandler() {
         return new Handler(this.getLooper()) {
@@ -40,8 +40,7 @@ public class AECMainThread extends HandlerThread {
                             AECProgressThread thread = new AECProgressThread(showResultHandler);
                             thread.start();
                             String result = solveAEC(task.numbers, task.target);
-                            thread.mstop();
-                            thread.interrupt();
+                            thread.stopProgressUpdate();
                             Message message = new Message();
                             if(!result.isEmpty()){
                                 message.obj = result;
@@ -55,7 +54,7 @@ public class AECMainThread extends HandlerThread {
                     case 1:
                         if (msg.obj instanceof String[]) {
                             String[] strings = (String[]) msg.obj;
-                            AECQuetion aecAnswer = generateAEC(strings[0], strings[1], strings[2]);
+                            AECQuestion aecAnswer = generateAEC(strings[0], strings[1], strings[2]);
                             Message message = new Message();
                             message.obj = aecAnswer;
                             message.what = BackgroundService.SHOW_QUESTION;

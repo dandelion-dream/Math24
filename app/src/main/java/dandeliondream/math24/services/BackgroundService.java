@@ -63,6 +63,7 @@ public class BackgroundService extends Service {
                             }
                         }
                         setRunningState(false);
+                        aecMainThread.quit();
                         isRunningAEC = false;
                         break;
                     case SHOW_PROGRESS:
@@ -72,19 +73,20 @@ public class BackgroundService extends Service {
                                 displayCallBack.onProgressUpdate(aecProgress);
                             }
                             if (mBuilder != null && mNotificationManager != null) {
-                                mBuilder.setContentTitle(aecProgress.progress);
+                                mBuilder.setContentTitle(aecProgress.toStringShort());
                                 mNotificationManager.notify(NOTIFY_ID, mBuilder.build());
                             }
                         }
                         break;
                     case SHOW_QUESTION:
-                        if (msg.obj instanceof AECQuetion) {
-                            AECQuetion aecQuetion = (AECQuetion) msg.obj;
+                        if (msg.obj instanceof AECQuestion) {
+                            AECQuestion aecQuetion = (AECQuestion) msg.obj;
                             if (displayCallBack != null) {
                                 displayCallBack.onQuestionUpdate(aecQuetion);
                             }
                         }
                         setRunningState(false);
+                        aecMainThread.quit();
                         isRunningAEC = false;
                         break;
                     case ABORTED:
@@ -134,7 +136,7 @@ public class BackgroundService extends Service {
             AECTask aecTask = new AECTask(numbers, target);
             Message message = new Message();
             message.obj = aecTask;
-            message.what = 0;
+            message.what = AECMainThread.SOLVE;
             this.aecMainThread = new AECMainThread(displayHandler);
             setRunningState(true);
             aecMainThread.start();
@@ -151,7 +153,7 @@ public class BackgroundService extends Service {
             if (m.find()) s=m.group();
             Message message = new Message();
             message.obj = new String[]{s, sz, target};
-            message.what = 1;
+            message.what = AECMainThread.GENERATE;
             this.aecMainThread = new AECMainThread(displayHandler);
             setRunningState(true);
             aecMainThread.start();

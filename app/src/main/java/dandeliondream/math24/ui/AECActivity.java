@@ -22,7 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import dandeliondream.math24.R;
 import dandeliondream.math24.databinding.ActivityAecBinding;
 import dandeliondream.math24.services.AECProgress;
-import dandeliondream.math24.services.AECQuetion;
+import dandeliondream.math24.services.AECQuestion;
 import dandeliondream.math24.services.BackgroundService;
 import dandeliondream.math24.services.DisplayCallBack;
 
@@ -39,7 +39,7 @@ public class AECActivity extends AppCompatActivity implements DisplayCallBack {
 
     private ProgressBar progressBarAEC;
 
-    private AECQuetion aecQuetion;
+    private AECQuestion aecQuetion;
 
     @Override
     public void onAnswerUpdate(String s) {
@@ -52,17 +52,18 @@ public class AECActivity extends AppCompatActivity implements DisplayCallBack {
     }
 
     @Override
-    public void onQuestionUpdate(AECQuetion aecQuetion) {
+    public void onQuestionUpdate(AECQuestion aecQuetion) {
         this.aecQuetion = aecQuetion;
         String[] strings = this.aecQuetion.aecQuestion.split("=");
         this.editTextValues.setText(strings[0]);
         this.editTextRank.setText(strings[1]);
+        this.textViewOutput.setText(strings[0]);
     }
 
     @Override
     public void onProgressUpdate(AECProgress aecProgress) {
-        this.textViewOutput.setText(aecProgress.progress);
-        int progressInt = (int)Math.floor(aecProgress.percentage);
+        this.textViewOutput.setText(aecProgress.toStringLong());
+        int progressInt = (int) Math.floor(aecProgress.getPercentage());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             this.progressBarAEC.setProgress(progressInt,true);
         }else{

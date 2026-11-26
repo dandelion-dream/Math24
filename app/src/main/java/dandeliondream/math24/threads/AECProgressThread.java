@@ -8,13 +8,13 @@ import dandeliondream.math24.services.BackgroundService;
 
 public class AECProgressThread extends Thread {
     private boolean isRunning;
-    private Handler showProgressHandler;
+    private final Handler showProgressHandler;
 
     public AECProgressThread(Handler showProgressHandler) {
         this.showProgressHandler = showProgressHandler;
     }
 
-    public void mstop() {
+    public void stopProgressUpdate() {
         this.isRunning = false;
     }
 
@@ -26,15 +26,14 @@ public class AECProgressThread extends Thread {
         while (isRunning) {
             try {
                 sleep(1000);
+                AECProgress aecProgress = getAECProgress();
+                Message message = new Message();
+                message.obj = aecProgress;
+                message.what = BackgroundService.SHOW_PROGRESS;
+                if(isRunning) showProgressHandler.sendMessage(message);
             } catch (InterruptedException e) {
                 return;
             }
-
-            AECProgress aecProgress = getAECProgress();
-            Message message = new Message();
-            message.obj = aecProgress;
-            message.what = BackgroundService.SHOW_PROGRESS;
-            showProgressHandler.sendMessage(message);
         }
     }
 }
