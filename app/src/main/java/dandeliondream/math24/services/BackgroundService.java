@@ -14,8 +14,10 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import java.util.regex.Matcher;
@@ -109,7 +111,7 @@ public class BackgroundService extends Service {
         return START_STICKY;
     }
 
-    @NonNull
+    @Nullable
     private Notification buildNotification() {
         this.mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -122,7 +124,9 @@ public class BackgroundService extends Service {
                     .setContentTitle("后台计算")
                     .setSmallIcon(R.drawable.ic_launcher_foreground);
         }
-        return mBuilder.build();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            return mBuilder.build();
+        }else return null;
     }
 
     @Override
@@ -130,12 +134,12 @@ public class BackgroundService extends Service {
         return binder;
     }
 
-    public void serviceSolveAEC(String[] numbers, String target) {
-        if (!isRunningAEC && numbers.length>0 && !target.isEmpty()) {
+    public void serviceSolveAEC(String numbers_str, String target) {
+        if (!isRunningAEC && !TextUtils.isEmpty(numbers_str) && !TextUtils.isEmpty(target)) {
             isRunningAEC = true;
-            AECTask aecTask = new AECTask(numbers, target);
+            String[] strings = {numbers_str, target};
             Message message = new Message();
-            message.obj = aecTask;
+            message.obj = strings;
             message.what = AECMainThread.SOLVE;
             this.aecMainThread = new AECMainThread(displayHandler);
             setRunningState(true);

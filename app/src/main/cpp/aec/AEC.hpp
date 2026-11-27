@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 #include <random>
-#include "fraction.hpp"
+#include "../fraction/fraction.hpp"
 
 #define ADD 0
 #define SUB 1
@@ -77,7 +77,7 @@ public:
     }
 };
 
-std::string AEC_solve(const std::vector<std::string> &number_array, const std::string &target);
+std::string AEC_solve(const std::string &number_str, const std::string &target);
 
 aecAnswer AEC_generate(const std::string &boundary, const std::string &sz, const std::string &target);
 

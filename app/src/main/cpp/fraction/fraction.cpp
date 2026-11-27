@@ -1,5 +1,5 @@
 #include "fraction.hpp"
-#include "mathutils.hpp"
+#include "../utils/mathutils.hpp"
 #include <string>
 #include <regex>
 #include <cstdint>

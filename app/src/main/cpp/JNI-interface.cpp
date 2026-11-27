@@ -14,32 +14,13 @@ JNIEXPORT jstring JNICALL
 Java_dandeliondream_math24_threads_AECMainThread_solveAEC
         (JNIEnv *env,
          jobject thiz,
-         jobjectArray numbers,
+         jstring numbers_str,
          jstring target) {
 
-    jsize jsize_input = env->GetArrayLength(numbers);
-    size_t size_input = 0;
-    if (jsize_input >= 0) {
-        size_input = static_cast<size_t>(jsize_input);
-    } else {
+    string str_numbers = jstringToString(env, numbers_str);
+    string str_target = jstringToString(env, target);
 
-    }
-
-    jclass stringClass = env->FindClass("java/lang/String");
-    vector<std::string> input_numbers(size_input);
-    for (size_t i = 0; i < size_input; i++) {
-        jobject jo = env->GetObjectArrayElement(numbers, static_cast<jsize>(i));
-        jboolean isString = env->IsInstanceOf(jo, stringClass);
-        if (isString == JNI_TRUE) {
-            auto js = static_cast<jstring>(jo);
-            input_numbers[i] = jstringToString(env, js);
-        } else {
-
-        }
-    }
-    std::string str_target = jstringToString(env, target);
-
-    std::string result = AEC_solve(input_numbers, str_target);
+    string result = AEC_solve(str_numbers, str_target);
 
     jstring js_result = env->NewStringUTF(result.c_str());
 
@@ -85,7 +66,7 @@ Java_dandeliondream_math24_services_BackgroundService_setRunningState(JNIEnv *en
 }
 }
 
-std::string jstringToString(JNIEnv *env, jstring jstr) {
+string jstringToString(JNIEnv *env, jstring jstr) {
     if (env == nullptr || jstr == nullptr) {
         return "";
     }
@@ -93,7 +74,7 @@ std::string jstringToString(JNIEnv *env, jstring jstr) {
     if (chars == nullptr) {
         return "";
     }
-    std::string result(chars);
+    string result(chars);
     env->ReleaseStringUTFChars(jstr, chars);
     return result;
 }

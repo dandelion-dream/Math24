@@ -11,7 +11,7 @@ android {
     defaultConfig {
         ndk { abiFilters += "arm64-v8a" }
         applicationId = "dandeliondream.math24"
-        minSdk = 29
+        minSdk = 23
         targetSdk = 37
         versionCode = 1
         versionName = "1.0"
@@ -45,6 +45,8 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    ndkVersion = "28.2.13676358"
+    buildToolsVersion = "37.0.0"
 }
 
 dependencies {

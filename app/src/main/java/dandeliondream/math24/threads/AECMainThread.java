@@ -3,11 +3,11 @@ package dandeliondream.math24.threads;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
 import dandeliondream.math24.services.AECQuestion;
-import dandeliondream.math24.services.AECTask;
 import dandeliondream.math24.services.BackgroundService;
 
 public class AECMainThread extends HandlerThread {
@@ -25,7 +25,7 @@ public class AECMainThread extends HandlerThread {
         this.showResultHandler = showResultHandler;
     }
 
-    private native String solveAEC(String[] numbers, String target);
+    private native String solveAEC(String numbers_str, String target);
 
     private native AECQuestion generateAEC(String boundary, String sz, String target);
 
@@ -35,21 +35,23 @@ public class AECMainThread extends HandlerThread {
             public void handleMessage(@NonNull Message msg) {
                 switch (msg.what) {
                     case 0:
-                        if (msg.obj instanceof AECTask) {
-                            AECTask task = (AECTask) msg.obj;
-                            AECProgressThread thread = new AECProgressThread(showResultHandler);
-                            thread.start();
-                            String result = solveAEC(task.numbers, task.target);
-                            thread.stopProgressUpdate();
-                            Message message = new Message();
-                            if(!result.isEmpty()){
-                                message.obj = result;
-                                message.what = BackgroundService.SHOW_ANSWER;
-                            }else{
-                                message.obj = null;
-                                message.what = BackgroundService.ABORTED;
+                        if (msg.obj instanceof String[]) {
+                            String[] strings = (String[]) msg.obj;
+                            if(strings.length == 2){
+                                AECProgressThread thread = new AECProgressThread(showResultHandler);
+                                thread.start();
+                                String result = solveAEC(strings[0], strings[1]);
+                                thread.stopProgressUpdate();
+                                Message message = new Message();
+                                if(!TextUtils.isEmpty(result)){  //Very Old Androids don't even have String.isEmpty().
+                                    message.obj = result;
+                                    message.what = BackgroundService.SHOW_ANSWER;
+                                }else{
+                                    message.obj = null;
+                                    message.what = BackgroundService.ABORTED;
+                                }
+                                showResultHandler.sendMessage(message);
                             }
-                            showResultHandler.sendMessage(message);
                         }
                     case 1:
                         if (msg.obj instanceof String[]) {

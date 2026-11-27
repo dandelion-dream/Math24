@@ -119,8 +119,10 @@ public class AECActivity extends AppCompatActivity implements DisplayCallBack {
         Intent intent = new Intent(this, BackgroundService.class);
         startService(intent);
 
-        clipAEC = (ClipboardManager) getSystemService(
-                Context.CLIPBOARD_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            clipAEC = (ClipboardManager) getSystemService(
+                    Context.CLIPBOARD_SERVICE);
+        }
 
         connAEC = new ServiceConnection() {
             @Override
@@ -138,7 +140,7 @@ public class AECActivity extends AppCompatActivity implements DisplayCallBack {
         bound = bindService(intent, connAEC, BIND_AUTO_CREATE);
 
         buttonSolveAEC.setOnClickListener(v -> {
-            String[] input = editTextValues.getText().toString().split(" ");
+            String input = editTextValues.getText().toString();
             String target = editTextRank.getText().toString();
             s.serviceSolveAEC(input, target);
         });
@@ -151,9 +153,14 @@ public class AECActivity extends AppCompatActivity implements DisplayCallBack {
         buttonStopAEC.setOnClickListener(v -> s.serviceStopAEC());
 
         textViewOutput.setOnClickListener(v -> {
-            ClipData result = ClipData.newPlainText(
-                    getString(R.string.result), textViewOutput.getText());
-            clipAEC.setPrimaryClip(result);
+            ClipData result = null;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                result = ClipData.newPlainText(
+                        getString(R.string.result), textViewOutput.getText());
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                clipAEC.setPrimaryClip(result);
+            }
             Toast.makeText(getApplicationContext()
                     , R.string.copied, Toast.LENGTH_SHORT).show();
         });

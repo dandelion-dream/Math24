@@ -5,7 +5,7 @@
 #include <string>
 #include <regex>
 #include <exception>
-#include "mathutils.hpp"
+#include "../utils/mathutils.hpp"
 
 const std::regex fraction_regex1(R"(^[+-]?[A-Za-z0-9]+/[+-]?[A-Za-z0-9]+$)");
 const std::regex fraction_regex2(R"(\(^[+-]?[A-Za-z0-9]+/[+-]?[A-Za-z0-9]+$\))");

@@ -4,7 +4,8 @@
 #include <vector>
 #include <random>
 #include "../globals.hpp"
-#include "fraction.hpp"
+#include "../fraction/fraction.hpp"
+#include "../utils/string_process.hpp"
 #include "AEC.hpp"
 
 /*
@@ -18,8 +19,9 @@ using std::random_device;
 using std::mt19937_64;
 using std::uniform_int_distribution;
 
-string AEC_solve(const vector<string> &number_array, const string &target) {
+string AEC_solve(const string &numbers_str, const string &target) {
     fraction fraction_target(target);
+    vector<string> number_array = string_split_char(numbers_str, ' ');
     size_t input_size = number_array.size();
     if (input_size > 50) { //It seems impossible to solve an AEC of more than 50 numbers.
         throw TooManyNumbersException();
@@ -58,7 +60,7 @@ string AEC_solve(const vector<string> &number_array, const string &target) {
             all_buckets.at(1LL << i) = node_bucket(vector<int64_t>{i}, 1ULL << i, 1, 0);
         }
         aec_buckets_filled++;
-    }
+    } //初始化桶，+n
     for (size_t i = 2; i < input_size; i++) {
         for (size_t n=0; n<bucket_number; n++){
             if (!keep_running) return "";

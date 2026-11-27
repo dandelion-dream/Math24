@@ -27,8 +27,9 @@ project("dandeliondream_math")
 add_library(${CMAKE_PROJECT_NAME} SHARED
         JNI-interface.cpp
         aec/AEC.cpp
-        aec/fraction.cpp
-        aec/mathutils.cpp
+        fraction/fraction.cpp
+        utils/mathutils.cpp
+        utils/string_process.cpp
         globals.cpp)
 
 # Specifies libraries CMake should link to your target library. You
